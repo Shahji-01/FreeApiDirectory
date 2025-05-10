@@ -7,8 +7,11 @@ export default function ApiCard({ api }) {
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
-              <Link href={`/api/${api.id}`}>
-                <a className="hover:text-blue-500 dark:hover:text-blue-400">{api.name}</a>
+              <Link 
+                href={`/api/${api.id}`}
+                className="hover:text-blue-500 dark:hover:text-blue-400"
+              >
+                {api.name}
               </Link>
             </h3>
             <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
@@ -27,10 +30,11 @@ export default function ApiCard({ api }) {
         </div>
         
         <div className="mt-4 flex flex-wrap items-center gap-2">
-          <Link href={`/category/${api.category}`}>
-            <a className="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800">
-              {api.category}
-            </a>
+          <Link 
+            href={`/category/${api.category}`}
+            className="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800"
+          >
+            {api.category}
           </Link>
           
           <span className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full">
