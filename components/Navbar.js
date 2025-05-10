@@ -44,9 +44,15 @@ export default function Navbar({ theme, toggleTheme }) {
             </Link>
             <Link 
               href="/api-services" 
-              className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
+              className={`text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 ${router.pathname === '/api-services' ? 'font-semibold text-blue-500 dark:text-blue-400' : ''}`}
             >
               Our APIs
+            </Link>
+            <Link 
+              href="/api-documentation" 
+              className={`text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 ${router.pathname === '/api-documentation' ? 'font-semibold text-blue-500 dark:text-blue-400' : ''}`}
+            >
+              API Docs
             </Link>
             <Link 
               href="/submit-api" 
@@ -103,7 +109,19 @@ export default function Navbar({ theme, toggleTheme }) {
             Browse
           </Link>
           <Link 
-            href="/api/submit"
+            href="/api-services"
+            className={`block px-3 py-2 rounded-md ${router.pathname === '/api-services' ? 'bg-blue-500 text-white' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+          >
+            Our APIs
+          </Link>
+          <Link 
+            href="/api-documentation"
+            className={`block px-3 py-2 rounded-md ${router.pathname === '/api-documentation' ? 'bg-blue-500 text-white' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+          >
+            API Docs
+          </Link>
+          <Link 
+            href="/submit-api"
             className="block px-3 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600"
           >
             Submit API
