@@ -1,0 +1,1 @@
+{"c":["pages/_app","webpack"],"r":["pages/search"],"m":["./components/ApiCard.js","./components/CategoryCard.js","./node_modules/fuse.js/dist/fuse.mjs","./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?absolutePagePath=%2Fhome%2Frunner%2Fworkspace%2Fpages%2Fsearch.js&page=%2Fsearch!","./pages/search.js"]}
