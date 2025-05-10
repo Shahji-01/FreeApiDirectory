@@ -18,34 +18,35 @@ export default function Navbar({ theme, toggleTheme }) {
         <div className="flex justify-between items-center h-16">
           {/* Logo and brand */}
           <div className="flex items-center">
-            <Link href="/">
-              <a className="flex items-center">
-                <svg className="h-8 w-8 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                  <path d="M2 17l10 5 10-5"></path>
-                  <path d="M2 12l10 5 10-5"></path>
-                </svg>
-                <span className="ml-2 text-xl font-bold text-gray-800 dark:text-white">FreeAPI Directory</span>
-              </a>
+            <Link href="/" className="flex items-center">
+              <svg className="h-8 w-8 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                <path d="M2 17l10 5 10-5"></path>
+                <path d="M2 12l10 5 10-5"></path>
+              </svg>
+              <span className="ml-2 text-xl font-bold text-gray-800 dark:text-white">FreeAPI Directory</span>
             </Link>
           </div>
 
           {/* Desktop navigation */}
           <div className="hidden md:flex md:items-center md:space-x-6">
-            <Link href="/">
-              <a className={`text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 ${router.pathname === '/' ? 'font-semibold text-blue-500 dark:text-blue-400' : ''}`}>
-                Home
-              </a>
+            <Link 
+              href="/" 
+              className={`text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 ${router.pathname === '/' ? 'font-semibold text-blue-500 dark:text-blue-400' : ''}`}
+            >
+              Home
             </Link>
-            <Link href="/search">
-              <a className={`text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 ${router.pathname === '/search' ? 'font-semibold text-blue-500 dark:text-blue-400' : ''}`}>
-                Browse
-              </a>
+            <Link 
+              href="/search" 
+              className={`text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 ${router.pathname === '/search' ? 'font-semibold text-blue-500 dark:text-blue-400' : ''}`}
+            >
+              Browse
             </Link>
-            <Link href="/api/submit">
-              <a className="px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition duration-300">
-                Submit API
-              </a>
+            <Link 
+              href="/api/submit" 
+              className="px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition duration-300"
+            >
+              Submit API
             </Link>
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
           </div>
@@ -83,20 +84,23 @@ export default function Navbar({ theme, toggleTheme }) {
       {/* Mobile menu */}
       <div className={`${isMenuOpen ? 'block' : 'hidden'} md:hidden`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          <Link href="/">
-            <a className={`block px-3 py-2 rounded-md ${router.pathname === '/' ? 'bg-blue-500 text-white' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>
-              Home
-            </a>
+          <Link 
+            href="/"
+            className={`block px-3 py-2 rounded-md ${router.pathname === '/' ? 'bg-blue-500 text-white' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+          >
+            Home
           </Link>
-          <Link href="/search">
-            <a className={`block px-3 py-2 rounded-md ${router.pathname === '/search' ? 'bg-blue-500 text-white' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>
-              Browse
-            </a>
+          <Link 
+            href="/search"
+            className={`block px-3 py-2 rounded-md ${router.pathname === '/search' ? 'bg-blue-500 text-white' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+          >
+            Browse
           </Link>
-          <Link href="/api/submit">
-            <a className="block px-3 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600">
-              Submit API
-            </a>
+          <Link 
+            href="/api/submit"
+            className="block px-3 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600"
+          >
+            Submit API
           </Link>
         </div>
       </div>
