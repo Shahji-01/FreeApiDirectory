@@ -30,6 +30,7 @@ export default function ApiForm({ api = emptyApi, isEdit = false, onSubmit }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [categories, setCategories] = useState([]);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submissionMessage, setSubmissionMessage] = useState('');
   const [activeSection, setActiveSection] = useState('basic'); // 'basic', 'advanced', 'submitter'
   const [showEndpointSection, setShowEndpointSection] = useState(false);
   const [showParameterSection, setShowParameterSection] = useState(false);
@@ -258,6 +259,7 @@ export default function ApiForm({ api = emptyApi, isEdit = false, onSubmit }) {
       if (onSubmit) {
         // Use the provided onSubmit handler (for admin panel)
         await onSubmit(dataToSubmit);
+        setSubmissionMessage('API updated successfully');
       } else {
         // Submit to the API endpoint
         const response = await fetch('/api/apis' + (isEdit ? `/${formData.id}` : ''), {
@@ -271,6 +273,9 @@ export default function ApiForm({ api = emptyApi, isEdit = false, onSubmit }) {
         if (!response.ok) {
           throw new Error('Failed to submit API');
         }
+        
+        const responseData = await response.json();
+        setSubmissionMessage(responseData.message || 'API submitted successfully!');
       }
       
       setSubmitSuccess(true);
@@ -279,11 +284,12 @@ export default function ApiForm({ api = emptyApi, isEdit = false, onSubmit }) {
       if (!isEdit) {
         setFormData(emptyApi);
         setActiveSection('basic');
+        window.scrollTo(0, 0); // Scroll to top to show success message
       }
       
       // Redirect after successful edit
       if (isEdit) {
-        router.push('/admin');
+        router.push('/admin?success=' + encodeURIComponent('API updated successfully'));
       }
       
     } catch (error) {
@@ -305,7 +311,7 @@ export default function ApiForm({ api = emptyApi, isEdit = false, onSubmit }) {
             <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
-            API submitted successfully! Your submission will be reviewed by our team.
+            {submissionMessage || 'API submitted successfully! Your submission will be reviewed by our team.'}
           </p>
         </div>
       )}
