@@ -235,22 +235,33 @@ export default function ApiServicesPage() {
                       {service.description}
                     </p>
                     <div className="flex justify-between items-center">
-                      <a
-                        href={`/api/services/${service.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer" 
-                        className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 inline-flex items-center"
-                      >
-                        View API
-                        <svg className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </a>
+                      <div className="flex space-x-3">
+                        <a
+                          href={`/api/services/${service.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer" 
+                          className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 inline-flex items-center"
+                        >
+                          Test API
+                          <svg className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </a>
+                        <Link
+                          href={`/api-details/${service.id}`}
+                          className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 inline-flex items-center"
+                        >
+                          Details
+                          <svg className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                          </svg>
+                        </Link>
+                      </div>
                       <button
                         onClick={() => setActiveTab(service.id)}
                         className="text-sm px-3 py-1.5 rounded-md bg-indigo-50 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-800"
                       >
-                        Details
+                        Preview
                       </button>
                     </div>
                   </div>
