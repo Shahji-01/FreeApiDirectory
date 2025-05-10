@@ -134,13 +134,14 @@ export default function Home() {
               <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
                 Featured APIs
               </h2>
-              <Link href="/search">
-                <a className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 flex items-center">
-                  View all
-                  <svg className="ml-1 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                  </svg>
-                </a>
+              <Link 
+                href="/search"
+                className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 flex items-center"
+              >
+                View all
+                <svg className="ml-1 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                </svg>
               </Link>
             </div>
             
@@ -179,10 +180,11 @@ export default function Home() {
                 <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
                   Help the developer community by submitting your API to our directory
                 </p>
-                <Link href="/api/submit">
-                  <a className="px-8 py-4 bg-white text-blue-600 font-bold rounded-lg hover:bg-blue-50 transition duration-300 shadow-md">
-                    Submit Your API
-                  </a>
+                <Link 
+                  href="/api/submit"
+                  className="px-8 py-4 bg-white text-blue-600 font-bold rounded-lg hover:bg-blue-50 transition duration-300 shadow-md"
+                >
+                  Submit Your API
                 </Link>
               </div>
             </div>

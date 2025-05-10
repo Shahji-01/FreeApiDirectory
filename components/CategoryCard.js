@@ -51,34 +51,35 @@ export default function CategoryCard({ category }) {
   };
 
   return (
-    <Link href={`/category/${category.name}`}>
-      <a className="block bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
-              {category.label}
-            </h3>
-            {getCategoryIcon(category.name)}
-          </div>
-          
-          <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
-            {category.description}
-          </p>
-          
-          <div className="flex justify-between items-center">
-            <span className="text-sm font-medium text-blue-500 dark:text-blue-400">
-              {category.count} APIs
-            </span>
-            
-            <span className="inline-flex items-center text-sm font-medium text-blue-500 dark:text-blue-400">
-              View all
-              <svg className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </span>
-          </div>
+    <Link 
+      href={`/category/${category.name}`}
+      className="block bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1"
+    >
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+            {category.label}
+          </h3>
+          {getCategoryIcon(category.name)}
         </div>
-      </a>
+        
+        <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
+          {category.description}
+        </p>
+        
+        <div className="flex justify-between items-center">
+          <span className="text-sm font-medium text-blue-500 dark:text-blue-400">
+            {category.count} APIs
+          </span>
+          
+          <span className="inline-flex items-center text-sm font-medium text-blue-500 dark:text-blue-400">
+            View all
+            <svg className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </span>
+        </div>
+      </div>
     </Link>
   );
 }
