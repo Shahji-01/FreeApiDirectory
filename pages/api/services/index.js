@@ -756,6 +756,428 @@ const apiServices = [
     },
     category: 'entertainment',
     icon: '😂'
+  },
+  {
+    id: 'colors',
+    name: 'Colors API',
+    description: 'Access color information, conversions, generate palettes, and get color psychology data. Perfect for design tools and applications.',
+    longDescription: 'This API provides comprehensive information about colors including RGB, HEX, and HSL values, complementary colors, and color psychology. It allows you to generate color palettes (complementary, analogous, triadic, etc.), get random colors, and search colors by name or family. This is ideal for design applications, creative tools, or any project requiring color management.',
+    endpoints: [
+      {
+        path: '/api/services/colors',
+        method: 'GET',
+        description: 'Get all colors'
+      },
+      {
+        path: '/api/services/colors?id=5',
+        method: 'GET',
+        description: 'Get a specific color by ID'
+      },
+      {
+        path: '/api/services/colors?name=blue',
+        method: 'GET',
+        description: 'Get a specific color by name'
+      },
+      {
+        path: '/api/services/colors?family=primary',
+        method: 'GET',
+        description: 'Get colors by family (primary, secondary, etc.)'
+      },
+      {
+        path: '/api/services/colors?random=true',
+        method: 'GET',
+        description: 'Generate a random color'
+      },
+      {
+        path: '/api/services/colors?palette=1',
+        method: 'GET',
+        description: 'Get a predefined color palette by ID or name'
+      },
+      {
+        path: '/api/services/colors?seed=FF0000&type=complementary',
+        method: 'GET',
+        description: 'Generate a custom palette from a seed color'
+      },
+      {
+        path: '/api/services/colors?metadata=true',
+        method: 'GET',
+        description: 'Get color metadata (available families, palette types, etc.)'
+      }
+    ],
+    parameters: [
+      {
+        name: 'id',
+        type: 'integer',
+        description: 'Get a specific color by ID',
+        required: false
+      },
+      {
+        name: 'name',
+        type: 'string',
+        description: 'Get a specific color by name',
+        required: false
+      },
+      {
+        name: 'family',
+        type: 'string',
+        description: 'Filter colors by family (primary, secondary, tertiary, neutral, etc.)',
+        required: false
+      },
+      {
+        name: 'random',
+        type: 'boolean',
+        description: 'Generate a random color',
+        required: false,
+        default: 'false'
+      },
+      {
+        name: 'palette',
+        type: 'string',
+        description: 'Get a predefined palette by ID or name',
+        required: false
+      },
+      {
+        name: 'seed',
+        type: 'string',
+        description: 'Seed color for generating a custom palette (hex format)',
+        required: false
+      },
+      {
+        name: 'type',
+        type: 'string',
+        description: 'Type of palette to generate (complementary, analogous, triadic, monochromatic)',
+        required: false,
+        default: 'complementary'
+      },
+      {
+        name: 'count',
+        type: 'integer',
+        description: 'Number of colors in generated palette (max 10)',
+        required: false,
+        default: '4'
+      },
+      {
+        name: 'metadata',
+        type: 'boolean',
+        description: 'Get metadata about available colors and palettes',
+        required: false,
+        default: 'false'
+      }
+    ],
+    example: {
+      request: '/api/services/colors?random=true',
+      response: {
+        "hex": "#4F9D63",
+        "rgb": {
+          "r": 79,
+          "g": 157,
+          "b": 99
+        },
+        "hsl": {
+          "h": 137,
+          "s": 33,
+          "l": 46
+        },
+        "complementary": "#9D4F89"
+      }
+    },
+    category: 'design',
+    icon: '🎨'
+  },
+  {
+    id: 'dictionary',
+    name: 'Dictionary API',
+    description: 'Access word definitions, pronunciations, synonyms, antonyms, and etymology information for educational and reference applications.',
+    longDescription: 'This API provides comprehensive dictionary data including word definitions, pronunciations, etymology, synonyms, antonyms, and usage examples. You can search words, get random words, or filter by word type. It is perfect for educational applications, language learning tools, or any project requiring rich linguistic data.',
+    endpoints: [
+      {
+        path: '/api/services/dictionary',
+        method: 'GET',
+        description: 'Get all words (with pagination)'
+      },
+      {
+        path: '/api/services/dictionary?word=serendipity',
+        method: 'GET',
+        description: 'Get a specific word and its details'
+      },
+      {
+        path: '/api/services/dictionary?type=adjective',
+        method: 'GET',
+        description: 'Get words by type (noun, verb, adjective, etc.)'
+      },
+      {
+        path: '/api/services/dictionary?random=true',
+        method: 'GET',
+        description: 'Get a random word'
+      },
+      {
+        path: '/api/services/dictionary?synonymsFor=eloquent',
+        method: 'GET',
+        description: 'Get synonyms for a specific word'
+      },
+      {
+        path: '/api/services/dictionary?antonymsFor=ephemeral',
+        method: 'GET',
+        description: 'Get antonyms for a specific word'
+      },
+      {
+        path: '/api/services/dictionary?search=time',
+        method: 'GET',
+        description: 'Search for words (matches in word, definition, or example)'
+      },
+      {
+        path: '/api/services/dictionary?metadata=true',
+        method: 'GET',
+        description: 'Get dictionary metadata'
+      }
+    ],
+    parameters: [
+      {
+        name: 'word',
+        type: 'string',
+        description: 'Get information for a specific word',
+        required: false
+      },
+      {
+        name: 'type',
+        type: 'string',
+        description: 'Filter words by type (noun, verb, adjective, etc.)',
+        required: false
+      },
+      {
+        name: 'random',
+        type: 'boolean',
+        description: 'Get a random word',
+        required: false,
+        default: 'false'
+      },
+      {
+        name: 'synonymsFor',
+        type: 'string',
+        description: 'Get synonyms for a specific word',
+        required: false
+      },
+      {
+        name: 'antonymsFor',
+        type: 'string',
+        description: 'Get antonyms for a specific word',
+        required: false
+      },
+      {
+        name: 'search',
+        type: 'string',
+        description: 'Search term to find in words, definitions, or examples',
+        required: false
+      },
+      {
+        name: 'limit',
+        type: 'integer',
+        description: 'Maximum number of results to return',
+        required: false,
+        default: '10'
+      },
+      {
+        name: 'metadata',
+        type: 'boolean',
+        description: 'Get metadata about the dictionary',
+        required: false,
+        default: 'false'
+      }
+    ],
+    example: {
+      request: '/api/services/dictionary?word=serendipity',
+      response: {
+        "word": "serendipity",
+        "pronunciation": "/ˌsɛrənˈdɪpɪti/",
+        "type": "noun",
+        "definition": "The occurrence and development of events by chance in a happy or beneficial way.",
+        "example": "The discovery of penicillin was a serendipity.",
+        "synonyms": ["chance", "fate", "destiny", "luck", "happy accident"],
+        "antonyms": ["misfortune", "design", "intent"],
+        "origin": "1754: coined by Horace Walpole, suggested by The Three Princes of Serendip, the title of a fairy tale in which the heroes 'were always making discoveries, by accidents and sagacity, of things they were not in quest of'",
+        "pluralForm": "serendipities"
+      }
+    },
+    category: 'education',
+    icon: '📚'
+  },
+  {
+    id: 'news',
+    name: 'News API',
+    description: 'Access simulated news articles, headlines, and sources for building news applications and aggregators.',
+    longDescription: 'This API provides access to a collection of simulated news articles across various categories including technology, business, sports, health, science, and entertainment. You can retrieve full articles or headlines, filter by category or source, search by keyword, and sort by publication date. Perfect for building news aggregators, content platforms, or applications requiring diverse textual content.',
+    endpoints: [
+      {
+        path: '/api/services/news',
+        method: 'GET',
+        description: 'Get recent news articles (with pagination)'
+      },
+      {
+        path: '/api/services/news?id=5',
+        method: 'GET',
+        description: 'Get a specific article by ID'
+      },
+      {
+        path: '/api/services/news?category=technology',
+        method: 'GET',
+        description: 'Get articles by category'
+      },
+      {
+        path: '/api/services/news?source=tech-daily',
+        method: 'GET',
+        description: 'Get articles from a specific source'
+      },
+      {
+        path: '/api/services/news?q=climate',
+        method: 'GET',
+        description: 'Search articles by keyword'
+      },
+      {
+        path: '/api/services/news?from=2023-04-01&to=2023-04-15',
+        method: 'GET',
+        description: 'Get articles within a date range'
+      },
+      {
+        path: '/api/services/news?headlines=true',
+        method: 'GET',
+        description: 'Get headlines only (without full content)'
+      },
+      {
+        path: '/api/services/news?sortBy=publishedAt&order=desc',
+        method: 'GET',
+        description: 'Sort articles by publication date'
+      },
+      {
+        path: '/api/services/news?sources=true',
+        method: 'GET',
+        description: 'Get list of all news sources'
+      },
+      {
+        path: '/api/services/news?metadata=true',
+        method: 'GET',
+        description: 'Get news API metadata'
+      }
+    ],
+    parameters: [
+      {
+        name: 'id',
+        type: 'integer',
+        description: 'Get a specific article by ID',
+        required: false
+      },
+      {
+        name: 'category',
+        type: 'string',
+        description: 'Filter articles by category (business, technology, sports, etc.)',
+        required: false
+      },
+      {
+        name: 'source',
+        type: 'string',
+        description: 'Filter articles by source ID',
+        required: false
+      },
+      {
+        name: 'q',
+        type: 'string',
+        description: 'Search term to find in article title, description, or content',
+        required: false
+      },
+      {
+        name: 'from',
+        type: 'string',
+        description: 'Start date for articles (YYYY-MM-DD format)',
+        required: false
+      },
+      {
+        name: 'to',
+        type: 'string',
+        description: 'End date for articles (YYYY-MM-DD format)',
+        required: false
+      },
+      {
+        name: 'headlines',
+        type: 'boolean',
+        description: 'Get headlines only (without full content)',
+        required: false,
+        default: 'false'
+      },
+      {
+        name: 'sortBy',
+        type: 'string',
+        description: 'Sort field (publishedAt, title)',
+        required: false,
+        default: 'publishedAt'
+      },
+      {
+        name: 'order',
+        type: 'string',
+        description: 'Sort order (asc, desc)',
+        required: false,
+        default: 'desc'
+      },
+      {
+        name: 'limit',
+        type: 'integer',
+        description: 'Number of articles per page',
+        required: false,
+        default: '10'
+      },
+      {
+        name: 'page',
+        type: 'integer',
+        description: 'Page number for pagination',
+        required: false,
+        default: '1'
+      },
+      {
+        name: 'sources',
+        type: 'boolean',
+        description: 'Get list of all news sources',
+        required: false,
+        default: 'false'
+      },
+      {
+        name: 'sourceDetails',
+        type: 'string',
+        description: 'Get details for a specific source by ID',
+        required: false
+      },
+      {
+        name: 'metadata',
+        type: 'boolean',
+        description: 'Get metadata about news API',
+        required: false,
+        default: 'false'
+      }
+    ],
+    example: {
+      request: '/api/services/news?category=technology&limit=1',
+      response: {
+        "status": "ok",
+        "totalResults": 5,
+        "page": 1,
+        "limit": 1,
+        "totalPages": 5,
+        "articles": [
+          {
+            "id": 1,
+            "title": "Tech Giants Unveil Revolutionary AI Assistant",
+            "description": "Major technology companies announce a new generation of AI assistants with unprecedented natural language capabilities.",
+            "content": "Leading technology companies have revealed their latest developments in artificial intelligence, showcasing assistants that can understand and respond to complex human instructions with remarkable accuracy. These new systems demonstrate significant improvements in reasoning, creativity, and factual knowledge compared to previous generations. Experts suggest these advancements could transform industries from customer service to content creation.",
+            "author": "Sarah Johnson",
+            "source": "tech-daily",
+            "url": "https://example.com/tech-giants-ai",
+            "imageUrl": "https://picsum.photos/id/1/800/450",
+            "publishedAt": "2023-04-15",
+            "category": "technology",
+            "tags": ["AI", "machine learning", "technology"]
+          }
+        ]
+      }
+    },
+    category: 'content',
+    icon: '📰'
   }
 ];
 
