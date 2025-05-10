@@ -2,8 +2,11 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
+  "/api-details/[id]": "pages/api-details/[id].js",
+  "/api-services": "pages/api-services.js",
   "/": "pages/index.js",
-  "/api/apis": "pages/api/apis.js",
   "/api/categories": "pages/api/categories.js",
-  "/api-details/[id]": "pages/api-details/[id].js"
+  "/api/apis": "pages/api/apis.js",
+  "/search": "pages/search.js",
+  "/api/services": "pages/api/services.js"
 }
