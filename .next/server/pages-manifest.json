@@ -4,7 +4,9 @@
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
   "/admin": "pages/admin.js",
-  "/admin/login": "pages/admin/login.js",
   "/api/admin/auth": "pages/api/admin/auth.js",
-  "/api/apis": "pages/api/apis.js"
+  "/api/apis/[id]": "pages/api/apis/[id].js",
+  "/api/apis": "pages/api/apis.js",
+  "/submit-api": "pages/submit-api.js",
+  "/admin/login": "pages/admin/login.js"
 }

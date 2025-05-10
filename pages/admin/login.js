@@ -34,13 +34,11 @@ export default function AdminLogin() {
         body: JSON.stringify(credentials),
       });
 
+      const data = await res.json();
+      
       if (!res.ok) {
-        const data = await res.json();
         throw new Error(data.error || 'Login failed');
       }
-      
-      // Get the token from the response
-      const data = await res.json();
       
       // Store token in localStorage for future requests
       localStorage.setItem('adminToken', data.token);
