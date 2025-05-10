@@ -44,9 +44,26 @@ export default function AdminDashboard() {
   const fetchApis = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('/api/apis');
+      // Get admin token from localStorage
+      const token = localStorage.getItem('adminToken');
+      
+      if (!token) {
+        router.push('/admin/login');
+        return;
+      }
+      
+      const res = await fetch('/api/apis', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       
       if (!res.ok) {
+        if (res.status === 401) {
+          // Unauthorized - redirect to login
+          router.push('/admin/login');
+          return;
+        }
         throw new Error('Failed to fetch APIs');
       }
       
@@ -83,11 +100,27 @@ export default function AdminDashboard() {
     
     setIsDeleting(true);
     try {
+      // Get admin token from localStorage
+      const token = localStorage.getItem('adminToken');
+      
+      if (!token) {
+        router.push('/admin/login');
+        return;
+      }
+      
       const res = await fetch(`/api/apis/${deleteApiId}`, {
         method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
       
       if (!res.ok) {
+        if (res.status === 401) {
+          // Unauthorized - redirect to login
+          router.push('/admin/login');
+          return;
+        }
         throw new Error('Failed to delete API');
       }
       
@@ -111,17 +144,31 @@ export default function AdminDashboard() {
 
   const toggleFeatured = async (api) => {
     try {
+      // Get admin token from localStorage
+      const token = localStorage.getItem('adminToken');
+      
+      if (!token) {
+        router.push('/admin/login');
+        return;
+      }
+      
       const updatedApi = { ...api, featured: !api.featured };
       
       const res = await fetch(`/api/apis/${api.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(updatedApi),
       });
       
       if (!res.ok) {
+        if (res.status === 401) {
+          // Unauthorized - redirect to login
+          router.push('/admin/login');
+          return;
+        }
         throw new Error('Failed to update API');
       }
       
@@ -143,17 +190,31 @@ export default function AdminDashboard() {
 
   const updateApiStatus = async (api, newStatus) => {
     try {
+      // Get admin token from localStorage
+      const token = localStorage.getItem('adminToken');
+      
+      if (!token) {
+        router.push('/admin/login');
+        return;
+      }
+      
       const updatedApi = { ...api, status: newStatus };
       
       const res = await fetch(`/api/apis/${api.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(updatedApi),
       });
       
       if (!res.ok) {
+        if (res.status === 401) {
+          // Unauthorized - redirect to login
+          router.push('/admin/login');
+          return;
+        }
         throw new Error('Failed to update API status');
       }
       
