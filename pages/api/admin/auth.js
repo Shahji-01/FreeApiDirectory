@@ -1,19 +1,14 @@
-import { verifyAdminCredentials } from '../../../lib/auth';
+import { verifyAdminCredentials, generateAdminToken, isAdminAuthenticated } from '../../../lib/auth';
 
 export default function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   
   // Handle preflight OPTIONS request
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
-  }
-  
-  // Initialize session if it doesn't exist
-  if (!req.session) {
-    req.session = {};
   }
   
   // Handle POST request - login
@@ -31,10 +26,17 @@ export default function handler(req, res) {
         return res.status(401).json({ error: 'Invalid credentials' });
       }
       
-      // Set session
-      req.session.isAdmin = true;
+      // Generate token
+      const token = generateAdminToken();
       
-      return res.status(200).json({ message: 'Login successful' });
+      return res.status(200).json({ 
+        message: 'Login successful',
+        token,
+        user: {
+          username,
+          isAdmin: true
+        }
+      });
     } catch (error) {
       console.error('Login error:', error);
       return res.status(500).json({ error: 'Authentication failed' });
@@ -43,19 +45,13 @@ export default function handler(req, res) {
   
   // Handle GET request - check if authenticated
   if (req.method === 'GET') {
-    if (req.session && req.session.isAdmin) {
+    const authenticated = isAdminAuthenticated(req);
+    
+    if (authenticated) {
       return res.status(200).json({ isAuthenticated: true });
     } else {
       return res.status(401).json({ isAuthenticated: false });
     }
-  }
-  
-  // Handle DELETE request - logout
-  if (req.method === 'DELETE') {
-    if (req.session) {
-      req.session.isAdmin = false;
-    }
-    return res.status(200).json({ message: 'Logged out successfully' });
   }
   
   // If the method is not allowed

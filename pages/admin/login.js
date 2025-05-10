@@ -38,7 +38,15 @@ export default function AdminLogin() {
         const data = await res.json();
         throw new Error(data.error || 'Login failed');
       }
-
+      
+      // Get the token from the response
+      const data = await res.json();
+      
+      // Store token in localStorage for future requests
+      localStorage.setItem('adminToken', data.token);
+      localStorage.setItem('adminUser', JSON.stringify(data.user));
+      
+      // Redirect to admin dashboard
       router.push('/admin');
     } catch (err) {
       console.error('Login error:', err);
@@ -57,7 +65,7 @@ export default function AdminLogin() {
 
       <div className="max-w-md w-full space-y-8">
         <div>
-          <Link href="/">
+          <Link href="/" legacyBehavior>
             <a className="flex justify-center">
               <svg className="h-12 w-12 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
@@ -143,7 +151,7 @@ export default function AdminLogin() {
         </div>
 
         <div className="text-center">
-          <Link href="/">
+          <Link href="/" legacyBehavior>
             <a className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
               ← Back to Website
             </a>
