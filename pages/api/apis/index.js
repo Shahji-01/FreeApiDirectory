@@ -1,10 +1,11 @@
 import { getAllApis, getFeaturedApis, getApisByCategory, addApi } from '../../../lib/db';
+import { isAdminAuthenticated } from '../../../lib/auth';
 
 export default function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   
   // Handle preflight OPTIONS request
   if (req.method === 'OPTIONS') {
@@ -16,17 +17,22 @@ export default function handler(req, res) {
     try {
       const { category, featured } = req.query;
       
+      // Check if request is from admin dashboard
+      const isAdmin = isAdminAuthenticated(req);
+      const options = { publicView: !isAdmin };
+      
       let apis;
       
       if (category) {
         // Filter by category
-        apis = getApisByCategory(category);
+        apis = getApisByCategory(category, options);
       } else if (featured === 'true') {
-        // Get only featured APIs
+        // Get only featured APIs - no need to pass options as featured APIs are always 
+        // filtered for approval in the function itself
         apis = getFeaturedApis();
       } else {
         // Get all APIs
-        apis = getAllApis();
+        apis = getAllApis(options);
       }
       
       return res.status(200).json({ apis });
@@ -51,11 +57,22 @@ export default function handler(req, res) {
         });
       }
       
+      // Check if request is from admin dashboard
+      const isAdmin = isAdminAuthenticated(req);
+      
+      // Set initial status based on who is submitting
+      const initialApiData = {
+        ...apiData,
+        status: isAdmin ? 'approved' : 'pending' // Admin submissions are auto-approved
+      };
+      
       // Add the new API
-      const newApi = addApi(apiData);
+      const newApi = addApi(initialApiData);
       
       return res.status(201).json({ 
-        message: 'API added successfully', 
+        message: isAdmin 
+          ? 'API added successfully' 
+          : 'API submitted successfully and is pending review',
         api: newApi 
       });
     } catch (error) {

@@ -6,12 +6,14 @@ import AdminLayout from '../../components/AdminLayout';
 
 export default function AdminDashboard() {
   const [apis, setApis] = useState([]);
+  const [filteredApis, setFilteredApis] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [deleteApiId, setDeleteApiId] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [activeFilter, setActiveFilter] = useState('all'); // 'all', 'pending', 'approved', 'rejected'
   const router = useRouter();
 
   useEffect(() => {
@@ -30,6 +32,15 @@ export default function AdminDashboard() {
     }
   }, [router.query]);
 
+  // Apply filtering when APIs or filter changes
+  useEffect(() => {
+    if (activeFilter === 'all') {
+      setFilteredApis(apis);
+    } else {
+      setFilteredApis(apis.filter(api => api.status === activeFilter));
+    }
+  }, [apis, activeFilter]);
+
   const fetchApis = async () => {
     setIsLoading(true);
     try {
@@ -40,7 +51,15 @@ export default function AdminDashboard() {
       }
       
       const data = await res.json();
-      setApis(data.apis || []);
+      
+      // Ensure all APIs have a status property
+      const apisWithStatus = (data.apis || []).map(api => ({
+        ...api,
+        status: api.status || 'approved' // Default existing APIs to approved
+      }));
+      
+      setApis(apisWithStatus);
+      setFilteredApis(apisWithStatus);
     } catch (err) {
       console.error('Error fetching APIs:', err);
       setError('Failed to load APIs. Please try again.');
@@ -122,6 +141,41 @@ export default function AdminDashboard() {
     }
   };
 
+  const updateApiStatus = async (api, newStatus) => {
+    try {
+      const updatedApi = { ...api, status: newStatus };
+      
+      const res = await fetch(`/api/apis/${api.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedApi),
+      });
+      
+      if (!res.ok) {
+        throw new Error('Failed to update API status');
+      }
+      
+      // Update the local state
+      setApis(apis.map(a => a.id === api.id ? { ...a, status: newStatus } : a));
+      
+      setSuccessMessage(`API ${newStatus === 'approved' ? 'approved' : newStatus === 'rejected' ? 'rejected' : 'updated'} successfully`);
+      
+      // Clear success message after 5 seconds
+      setTimeout(() => setSuccessMessage(''), 5000);
+    } catch (err) {
+      console.error('Error updating API status:', err);
+      setError('Failed to update API status. Please try again.');
+      
+      // Clear error message after 5 seconds
+      setTimeout(() => setError(null), 5000);
+    }
+  };
+
+  // Get count of pending APIs
+  const pendingCount = apis.filter(api => api.status === 'pending').length;
+
   return (
     <AdminLayout title="Admin Dashboard">
       <Head>
@@ -132,9 +186,14 @@ export default function AdminDashboard() {
       <div className="mb-6 flex justify-between items-center">
         <h2 className="text-xl text-gray-700 dark:text-gray-300">
           Manage API Listings
+          {pendingCount > 0 && (
+            <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+              {pendingCount} pending
+            </span>
+          )}
         </h2>
-        <Link href="/api/submit">
-          <a className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+        <Link href="/submit-api">
+          <a className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors">
             Add New API
           </a>
         </Link>
@@ -152,9 +211,69 @@ export default function AdminDashboard() {
         </div>
       )}
 
+      {/* Filter tabs */}
+      <div className="mb-6">
+        <div className="border-b border-gray-200 dark:border-gray-700">
+          <nav className="-mb-px flex space-x-8">
+            <button
+              onClick={() => setActiveFilter('all')}
+              className={`whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm ${
+                activeFilter === 'all'
+                  ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+              }`}
+            >
+              All
+              <span className="ml-2 py-0.5 px-2 rounded-full text-xs bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300">
+                {apis.length}
+              </span>
+            </button>
+            <button
+              onClick={() => setActiveFilter('pending')}
+              className={`whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm ${
+                activeFilter === 'pending'
+                  ? 'border-yellow-500 text-yellow-600 dark:text-yellow-400'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+              }`}
+            >
+              Pending
+              <span className="ml-2 py-0.5 px-2 rounded-full text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300">
+                {apis.filter(api => api.status === 'pending').length}
+              </span>
+            </button>
+            <button
+              onClick={() => setActiveFilter('approved')}
+              className={`whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm ${
+                activeFilter === 'approved'
+                  ? 'border-green-500 text-green-600 dark:text-green-400'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+              }`}
+            >
+              Approved
+              <span className="ml-2 py-0.5 px-2 rounded-full text-xs bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                {apis.filter(api => api.status === 'approved').length}
+              </span>
+            </button>
+            <button
+              onClick={() => setActiveFilter('rejected')}
+              className={`whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm ${
+                activeFilter === 'rejected'
+                  ? 'border-red-500 text-red-600 dark:text-red-400'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+              }`}
+            >
+              Rejected
+              <span className="ml-2 py-0.5 px-2 rounded-full text-xs bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300">
+                {apis.filter(api => api.status === 'rejected').length}
+              </span>
+            </button>
+          </nav>
+        </div>
+      </div>
+
       {isLoading ? (
         <div className="py-12 flex justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
         </div>
       ) : (
         <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
@@ -172,6 +291,9 @@ export default function AdminDashboard() {
                     Added Date
                   </th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                     Featured
                   </th>
                   <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -180,21 +302,21 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                {apis.length === 0 ? (
+                {filteredApis.length === 0 ? (
                   <tr>
-                    <td colSpan="5" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                    <td colSpan="6" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
                       No APIs found
                     </td>
                   </tr>
                 ) : (
-                  apis.map(api => (
-                    <tr key={api.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  filteredApis.map(api => (
+                    <tr key={api.id} className={`hover:bg-gray-50 dark:hover:bg-gray-700 ${
+                      api.status === 'pending' ? 'bg-yellow-50 dark:bg-yellow-900/10' : ''
+                    }`}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
-                            <svg className="h-6 w-6 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
-                            </svg>
+                          <div className="flex-shrink-0 h-10 w-10 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center text-xl">
+                            {api.icon || '🔌'}
                           </div>
                           <div className="ml-4">
                             <div className="text-sm font-medium text-gray-900 dark:text-white">
@@ -207,12 +329,40 @@ export default function AdminDashboard() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100">
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200">
                           {api.category}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                         {new Date(api.addedAt).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {api.status === 'pending' && (
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() => updateApiStatus(api, 'approved')}
+                              className="px-2 py-1 text-xs font-medium rounded bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200 hover:bg-green-200 dark:hover:bg-green-900/50"
+                            >
+                              Approve
+                            </button>
+                            <button
+                              onClick={() => updateApiStatus(api, 'rejected')}
+                              className="px-2 py-1 text-xs font-medium rounded bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-200 hover:bg-red-200 dark:hover:bg-red-900/50"
+                            >
+                              Reject
+                            </button>
+                          </div>
+                        )}
+                        {api.status === 'approved' && (
+                          <span className="px-2 py-1 text-xs font-medium rounded bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200">
+                            Approved
+                          </span>
+                        )}
+                        {api.status === 'rejected' && (
+                          <span className="px-2 py-1 text-xs font-medium rounded bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200">
+                            Rejected
+                          </span>
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
                         <button
@@ -220,6 +370,7 @@ export default function AdminDashboard() {
                           className={`relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none ${
                             api.featured ? 'bg-green-500' : 'bg-gray-200 dark:bg-gray-700'
                           }`}
+                          disabled={api.status !== 'approved'}
                         >
                           <span
                             className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 ${
@@ -230,9 +381,9 @@ export default function AdminDashboard() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="flex justify-end space-x-2">
-                          <Link href={`/api/${api.id}`}>
+                          <Link href={`/api-details/${api.id}`}>
                             <a 
-                              className="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300"
+                              className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300"
                               title="View"
                             >
                               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
