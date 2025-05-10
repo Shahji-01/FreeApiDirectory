@@ -4,5 +4,6 @@
   "/_document": "pages/_document.js",
   "/api-documentation": "pages/api-documentation.js",
   "/api-services": "pages/api-services.js",
+  "/": "pages/index.js",
   "/api/services": "pages/api/services.js"
 }
