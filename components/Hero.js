@@ -28,15 +28,17 @@ export default function Hero() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/search">
-              <a className="px-6 py-3 bg-white text-blue-600 font-medium rounded-lg hover:bg-blue-50 transition duration-300 shadow-md">
-                Browse All APIs
-              </a>
+            <Link 
+              href="/search"
+              className="px-6 py-3 bg-white text-blue-600 font-medium rounded-lg hover:bg-blue-50 transition duration-300 shadow-md"
+            >
+              Browse All APIs
             </Link>
-            <Link href="/api/submit">
-              <a className="px-6 py-3 bg-transparent border-2 border-white text-white font-medium rounded-lg hover:bg-white hover:text-blue-600 transition duration-300 shadow-md">
-                Submit an API
-              </a>
+            <Link 
+              href="/api/submit"
+              className="px-6 py-3 bg-transparent border-2 border-white text-white font-medium rounded-lg hover:bg-white hover:text-blue-600 transition duration-300 shadow-md"
+            >
+              Submit an API
             </Link>
           </div>
         </div>

@@ -30,18 +30,18 @@ export default function Footer() {
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-3">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/">
-                  <a className="text-gray-600 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">Home</a>
+                <Link href="/" className="text-gray-600 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">
+                  Home
                 </Link>
               </li>
               <li>
-                <Link href="/search">
-                  <a className="text-gray-600 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">Browse APIs</a>
+                <Link href="/search" className="text-gray-600 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">
+                  Browse APIs
                 </Link>
               </li>
               <li>
-                <Link href="/api/submit">
-                  <a className="text-gray-600 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">Submit API</a>
+                <Link href="/api/submit" className="text-gray-600 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">
+                  Submit API
                 </Link>
               </li>
             </ul>
@@ -52,8 +52,8 @@ export default function Footer() {
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-3">Resources</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/admin">
-                  <a className="text-gray-600 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">Admin</a>
+                <Link href="/admin" className="text-gray-600 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">
+                  Admin
                 </Link>
               </li>
               <li>
