@@ -2,9 +2,9 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="bg-white dark:bg-gray-800 shadow-inner pt-10 pb-6 reveal-on-scroll">
+    <footer className="bg-white dark:bg-slate-800 shadow-inner pt-10 pb-6 reveal-on-scroll">
       {/* Gradient divider */}
-      <div className="h-1 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 animate-gradient"></div>
+      <div className="h-1 w-full bg-gradient-to-r from-indigo-600 via-blue-500 to-indigo-400 animate-gradient"></div>
       
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -154,19 +154,19 @@ export default function Footer() {
         </div>
 
         {/* Newsletter subscription */}
-        <div className="mt-8 p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg reveal-on-scroll">
+        <div className="mt-8 p-6 bg-gradient-to-br from-indigo-600 to-blue-600 rounded-lg shadow-lg reveal-on-scroll">
           <div className="md:flex items-center justify-between">
             <div className="mb-4 md:mb-0 md:mr-6">
-              <h4 className="font-semibold text-gray-800 dark:text-white">Subscribe to our newsletter</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Get the latest API updates and news directly to your inbox</p>
+              <h4 className="font-semibold text-white text-lg">Stay updated with the latest APIs</h4>
+              <p className="text-sm text-indigo-100">Get the latest API updates and news directly to your inbox</p>
             </div>
             <div className="flex">
               <input 
                 type="email" 
                 placeholder="Enter your email" 
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white w-full"
+                className="px-4 py-2 border border-indigo-400 dark:border-indigo-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-white bg-white/10 backdrop-blur-sm text-white placeholder-indigo-200 w-full"
               />
-              <button className="bg-indigo-600 text-white px-4 py-2 rounded-r-md hover:bg-indigo-700 transition-colors">
+              <button className="bg-white text-indigo-600 font-medium px-4 py-2 rounded-r-md hover:bg-indigo-50 transition-colors shadow-sm">
                 Subscribe
               </button>
             </div>
@@ -174,12 +174,24 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-gray-200 dark:border-gray-700 mt-8 pt-6 text-center reveal-on-scroll">
-          <p className="text-gray-500 dark:text-gray-400 text-sm">
+        <div className="mt-8 pt-6 text-center reveal-on-scroll">
+          <div className="flex justify-center space-x-4 mb-4">
+            <a href="#" className="text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors">Terms</a>
+            <span className="text-gray-300 dark:text-gray-600">|</span>
+            <a href="#" className="text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors">Privacy</a>
+            <span className="text-gray-300 dark:text-gray-600">|</span>
+            <a href="#" className="text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors">API Policy</a>
+          </div>
+          <p className="text-gray-600 dark:text-gray-300 text-sm font-medium">
             &copy; {new Date().getFullYear()} FreeAPI Directory. All rights reserved.
           </p>
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
-            Built with Next.js, Tailwind CSS, and ❤️
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-2 flex items-center justify-center">
+            <span>Built with</span>
+            <span className="mx-1 text-red-500">❤️</span>
+            <span>using</span>
+            <a href="https://nextjs.org" target="_blank" rel="noopener noreferrer" className="mx-1 text-black dark:text-white font-semibold hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Next.js</a>
+            <span>and</span>
+            <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" className="mx-1 text-sky-500 font-semibold hover:text-sky-600 transition-colors">Tailwind CSS</a>
           </p>
         </div>
       </div>

@@ -199,13 +199,20 @@ export default function AdminDashboard() {
         return;
       }
       
-      console.log(`Updating API ${api.id} status to ${newStatus}`);
+      // Set loading state for better UX
+      setIsLoading(true);
       
-      // For status updates, only send the minimal required data
-      const statusData = { 
-        id: api.id,
-        status: newStatus 
+      // Log the attempt to update
+      console.log(`Updating API ${api.id} (${api.name}) status to ${newStatus}`);
+      
+      // For status updates, we need to include all required fields
+      // Get a copy of the full API object to ensure we have all required fields
+      const updatedApi = { 
+        ...api,  // Include all existing properties
+        status: newStatus  // Update only the status
       };
+      
+      console.log('Sending data:', updatedApi);
       
       const res = await fetch(`/api/apis/${api.id}`, {
         method: 'PUT',
@@ -213,14 +220,16 @@ export default function AdminDashboard() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(statusData),
+        body: JSON.stringify(updatedApi),
       });
       
       // Get response data for better error handling
       let responseData;
       try {
         responseData = await res.json();
+        console.log('Response:', responseData);
       } catch (e) {
+        console.error('Failed to parse response:', e);
         responseData = null;
       }
       
@@ -238,13 +247,14 @@ export default function AdminDashboard() {
       }
       
       // Update the local state
-      setApis(apis.map(a => a.id === api.id ? { ...a, status: newStatus } : a));
+      const updatedApis = apis.map(a => a.id === api.id ? { ...a, status: newStatus } : a);
+      setApis(updatedApis);
       
       // If API now has a different status than our filter, it might disappear from view
       if (activeFilter !== 'all' && activeFilter !== newStatus) {
-        setSuccessMessage(`API ${newStatus} successfully. It will no longer appear in the current filter view.`);
+        setSuccessMessage(`API "${api.name}" status changed to ${newStatus}. It will no longer appear in the current filter view.`);
       } else {
-        setSuccessMessage(`API ${newStatus === 'approved' ? 'approved' : newStatus === 'rejected' ? 'rejected' : 'updated'} successfully`);
+        setSuccessMessage(`API "${api.name}" ${newStatus === 'approved' ? 'approved' : newStatus === 'rejected' ? 'rejected' : 'updated'} successfully.`);
       }
       
       // Clear success message after 5 seconds
@@ -255,6 +265,8 @@ export default function AdminDashboard() {
       
       // Clear error message after 5 seconds
       setTimeout(() => setError(null), 5000);
+    } finally {
+      setIsLoading(false);
     }
   };
 
