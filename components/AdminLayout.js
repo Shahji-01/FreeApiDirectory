@@ -8,44 +8,73 @@ export default function AdminLayout({ children, title }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [theme, setTheme] = useState('light');
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
     // Check authentication status
     const checkAuth = async () => {
       try {
+        // Check if token exists in localStorage
+        const token = localStorage.getItem('adminToken');
+        
+        if (!token) {
+          router.push('/admin/login');
+          return;
+        }
+        
+        // Verify token with API
         const res = await fetch('/api/admin/auth', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
           },
         });
         
         if (res.ok) {
           setIsAuthenticated(true);
+          
+          // Get user info from localStorage
+          const userInfo = localStorage.getItem('adminUser');
+          if (userInfo) {
+            try {
+              const userData = JSON.parse(userInfo);
+              setUsername(userData.username || 'Admin');
+            } catch (e) {
+              console.error('Failed to parse user data', e);
+            }
+          }
         } else {
-          // Redirect to login if not authenticated
+          // Token is invalid, clear localStorage and redirect
+          localStorage.removeItem('adminToken');
+          localStorage.removeItem('adminUser');
           router.push('/admin/login');
         }
       } catch (error) {
         console.error('Auth check failed:', error);
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
         router.push('/admin/login');
       } finally {
         setIsLoading(false);
       }
     };
 
-    checkAuth();
+    // Check client-side only
+    if (typeof window !== 'undefined') {
+      checkAuth();
 
-    // Check theme preference
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme) {
-      setTheme(savedTheme);
-      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
-    } else if (prefersDark) {
-      setTheme('dark');
-      document.documentElement.classList.add('dark');
+      // Check theme preference
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      if (savedTheme) {
+        setTheme(savedTheme);
+        document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+      } else if (prefersDark) {
+        setTheme('dark');
+        document.documentElement.classList.add('dark');
+      }
     }
   }, [router]);
 
@@ -56,15 +85,13 @@ export default function AdminLayout({ children, title }) {
     document.documentElement.classList.toggle('dark');
   };
 
-  const handleLogout = async () => {
-    try {
-      await fetch('/api/admin/auth', {
-        method: 'DELETE',
-      });
-      router.push('/admin/login');
-    } catch (error) {
-      console.error('Logout failed:', error);
-    }
+  const handleLogout = () => {
+    // Remove token and user info from localStorage
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminUser');
+    
+    // Redirect to login page
+    router.push('/admin/login');
   };
 
   if (isLoading) {
@@ -86,7 +113,7 @@ export default function AdminLayout({ children, title }) {
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <Link href="/admin">
+              <Link href="/admin" legacyBehavior>
                 <a className="flex items-center">
                   <svg className="h-8 w-8 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
@@ -101,9 +128,13 @@ export default function AdminLayout({ children, title }) {
             </div>
             
             <div className="flex items-center space-x-4">
+              <div className="mr-2 text-sm text-gray-600 dark:text-gray-300">
+                Welcome, {username}
+              </div>
+            
               <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
               
-              <Link href="/">
+              <Link href="/" legacyBehavior>
                 <a className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
                   View Site
                 </a>
