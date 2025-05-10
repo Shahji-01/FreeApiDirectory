@@ -253,7 +253,7 @@ export default function AdminDashboard() {
             </span>
           )}
         </h2>
-        <Link href="/submit-api">
+        <Link href="/submit-api" legacyBehavior>
           <a className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors">
             Add New API
           </a>
@@ -442,7 +442,7 @@ export default function AdminDashboard() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="flex justify-end space-x-2">
-                          <Link href={`/api-details/${api.id}`}>
+                          <Link href={`/api-details/${api.id}`} legacyBehavior>
                             <a 
                               className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300"
                               title="View"
@@ -453,7 +453,7 @@ export default function AdminDashboard() {
                               </svg>
                             </a>
                           </Link>
-                          <Link href={`/admin/edit/${api.id}`}>
+                          <Link href={`/admin/edit/${api.id}`} legacyBehavior>
                             <a 
                               className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300"
                               title="Edit"
