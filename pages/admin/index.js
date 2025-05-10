@@ -194,9 +194,13 @@ export default function AdminDashboard() {
       const token = localStorage.getItem('adminToken');
       
       if (!token) {
-        router.push('/admin/login');
+        setError('Authentication token missing. Please log in again.');
+        setTimeout(() => router.push('/admin/login'), 2000);
         return;
       }
+      
+      console.log(`Updating API ${api.id} status to ${newStatus}`);
+      console.log(`Using token: ${token.substring(0, 10)}...`);
       
       const updatedApi = { ...api, status: newStatus };
       
@@ -209,25 +213,42 @@ export default function AdminDashboard() {
         body: JSON.stringify(updatedApi),
       });
       
+      // Get response data for better error handling
+      let responseData;
+      try {
+        responseData = await res.json();
+      } catch (e) {
+        responseData = null;
+      }
+      
       if (!res.ok) {
         if (res.status === 401) {
-          // Unauthorized - redirect to login
-          router.push('/admin/login');
+          setError('Your session has expired. Please log in again.');
+          localStorage.removeItem('adminToken');
+          localStorage.removeItem('adminUser');
+          setTimeout(() => router.push('/admin/login'), 2000);
           return;
         }
-        throw new Error('Failed to update API status');
+        
+        const errorMessage = responseData?.error || `Failed to update API status (${res.status})`;
+        throw new Error(errorMessage);
       }
       
       // Update the local state
       setApis(apis.map(a => a.id === api.id ? { ...a, status: newStatus } : a));
       
-      setSuccessMessage(`API ${newStatus === 'approved' ? 'approved' : newStatus === 'rejected' ? 'rejected' : 'updated'} successfully`);
+      // If API now has a different status than our filter, it might disappear from view
+      if (activeFilter !== 'all' && activeFilter !== newStatus) {
+        setSuccessMessage(`API ${newStatus} successfully. It will no longer appear in the current filter view.`);
+      } else {
+        setSuccessMessage(`API ${newStatus === 'approved' ? 'approved' : newStatus === 'rejected' ? 'rejected' : 'updated'} successfully`);
+      }
       
       // Clear success message after 5 seconds
       setTimeout(() => setSuccessMessage(''), 5000);
     } catch (err) {
       console.error('Error updating API status:', err);
-      setError('Failed to update API status. Please try again.');
+      setError(`Failed to update API status: ${err.message}`);
       
       // Clear error message after 5 seconds
       setTimeout(() => setError(null), 5000);
