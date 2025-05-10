@@ -16,22 +16,33 @@ export default function ApiDetailPage() {
   const [liveResponse, setLiveResponse] = useState(null);
   const [liveLoading, setLiveLoading] = useState(false);
   const [liveError, setLiveError] = useState(null);
+  const [services, setServices] = useState([]);
 
-  // Fetch API details
+  // Fetch API details and all services
   useEffect(() => {
     if (!id) return;
 
-    const fetchApiDetails = async () => {
+    const fetchData = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch(`/api/services?id=${id}`);
         
-        if (!res.ok) {
-          throw new Error(`Failed to fetch API details: ${res.status}`);
+        // Fetch specific API details
+        const apiRes = await fetch(`/api/services?id=${id}`);
+        
+        if (!apiRes.ok) {
+          throw new Error(`Failed to fetch API details: ${apiRes.status}`);
         }
         
-        const data = await res.json();
-        setApiData(data);
+        const apiData = await apiRes.json();
+        setApiData(apiData);
+        
+        // Fetch all services for related APIs section
+        const servicesRes = await fetch('/api/services');
+        
+        if (servicesRes.ok) {
+          const servicesData = await servicesRes.json();
+          setServices(servicesData.services || []);
+        }
       } catch (err) {
         console.error('Error fetching API details:', err);
         setError(err.message);
@@ -40,7 +51,7 @@ export default function ApiDetailPage() {
       }
     };
     
-    fetchApiDetails();
+    fetchData();
   }, [id]);
 
   // Function to format method for display with color
