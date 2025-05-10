@@ -200,9 +200,12 @@ export default function AdminDashboard() {
       }
       
       console.log(`Updating API ${api.id} status to ${newStatus}`);
-      console.log(`Using token: ${token.substring(0, 10)}...`);
       
-      const updatedApi = { ...api, status: newStatus };
+      // For status updates, only send the minimal required data
+      const statusData = { 
+        id: api.id,
+        status: newStatus 
+      };
       
       const res = await fetch(`/api/apis/${api.id}`, {
         method: 'PUT',
@@ -210,7 +213,7 @@ export default function AdminDashboard() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(updatedApi),
+        body: JSON.stringify(statusData),
       });
       
       // Get response data for better error handling

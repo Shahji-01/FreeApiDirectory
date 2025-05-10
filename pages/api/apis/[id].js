@@ -50,7 +50,32 @@ export default function handler(req, res) {
       try {
         const apiData = req.body;
         
-        // Validate required fields
+        console.log('Updating API:', id);
+        console.log('API data received:', apiData);
+        
+        // Check if API exists before trying to update
+        const existingApi = getApiById(id, { publicView: false });
+        if (!existingApi) {
+          console.error('API not found with ID:', id);
+          return res.status(404).json({ error: 'API not found' });
+        }
+        
+        // If we're just updating the status, we don't need to validate all fields
+        if (apiData.status && Object.keys(apiData).length === 2) { // id and status only
+          console.log('Status-only update detected');
+          const updatedApi = updateApi(id, { status: apiData.status });
+          
+          if (!updatedApi) {
+            return res.status(404).json({ error: 'API not found' });
+          }
+          
+          return res.status(200).json({ 
+            message: `API status updated to '${apiData.status}' successfully`, 
+            api: updatedApi 
+          });
+        }
+        
+        // For full updates, validate required fields
         const requiredFields = ['name', 'description', 'category', 'link'];
         const missingFields = requiredFields.filter(field => !apiData[field]);
         
@@ -73,7 +98,7 @@ export default function handler(req, res) {
         });
       } catch (error) {
         console.error('Error updating API:', error);
-        return res.status(500).json({ error: 'Failed to update API' });
+        return res.status(500).json({ error: `Failed to update API: ${error.message}` });
       }
     }
     
