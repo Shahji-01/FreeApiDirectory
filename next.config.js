@@ -4,11 +4,6 @@ const nextConfig = {
   swcMinify: true,
   // Support static export for Hostinger Shared Hosting
   output: process.env.EXPORT === 'true' ? 'export' : undefined,
-  // Bind to 0.0.0.0 to make externally accessible
-  serverOptions: {
-    hostname: '0.0.0.0',
-    port: 5000, // Use port 5000 for the frontend
-  },
   // API routes config if using Next.js API routes
   async headers() {
     return [
