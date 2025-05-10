@@ -107,42 +107,42 @@ export default function AdminLayout({ children, title }) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-slate-900">
       {/* Admin navbar */}
-      <nav className="bg-white dark:bg-gray-800 shadow-md">
+      <nav className="bg-indigo-700 dark:bg-indigo-900 text-white shadow-lg">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <Link href="/admin" legacyBehavior>
                 <a className="flex items-center">
-                  <svg className="h-8 w-8 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg className="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
                     <line x1="9" y1="3" x2="9" y2="21" />
                     <line x1="15" y1="3" x2="15" y2="21" />
                     <line x1="3" y1="9" x2="21" y2="9" />
                     <line x1="3" y1="15" x2="21" y2="15" />
                   </svg>
-                  <span className="ml-2 text-xl font-bold text-gray-800 dark:text-white">Admin Dashboard</span>
+                  <span className="ml-2 text-xl font-bold text-white">Admin Dashboard</span>
                 </a>
               </Link>
             </div>
             
-            <div className="flex items-center space-x-4">
-              <div className="mr-2 text-sm text-gray-600 dark:text-gray-300">
+            <div className="flex items-center space-x-5">
+              <div className="mr-2 text-sm text-white">
                 Welcome, {username}
               </div>
             
               <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
               
               <Link href="/" legacyBehavior>
-                <a className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
+                <a className="text-indigo-100 hover:text-white hover:underline transition duration-150">
                   View Site
                 </a>
               </Link>
               
               <button
                 onClick={handleLogout}
-                className="text-gray-600 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400"
+                className="bg-indigo-800 hover:bg-indigo-600 text-white px-3 py-1 rounded-md transition duration-150"
               >
                 Logout
               </button>
@@ -153,19 +153,20 @@ export default function AdminLayout({ children, title }) {
       
       {/* Admin content */}
       <main className="flex-grow container mx-auto px-4 py-8">
-        <div className="mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
+        <div className="mb-8">
+          <h1 className="text-2xl md:text-3xl font-bold text-indigo-800 dark:text-indigo-300">
             {title}
           </h1>
+          <div className="h-1 w-20 bg-indigo-600 mt-2"></div>
         </div>
         
         {children}
       </main>
       
       {/* Admin footer */}
-      <footer className="bg-white dark:bg-gray-800 shadow-inner py-4">
+      <footer className="bg-indigo-700 dark:bg-indigo-900 text-white py-4 shadow-inner">
         <div className="container mx-auto px-4">
-          <p className="text-center text-gray-500 dark:text-gray-400 text-sm">
+          <p className="text-center text-indigo-100 text-sm">
             &copy; {new Date().getFullYear()} FreeAPI Directory Admin
           </p>
         </div>
