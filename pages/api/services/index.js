@@ -1,7 +1,5 @@
 // API Services Directory - Lists all available API services
 
-// Define our API handler function
-
 const apiServices = [
   {
     id: 'random-user',
