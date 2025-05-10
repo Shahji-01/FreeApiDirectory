@@ -1178,6 +1178,254 @@ const apiServices = [
     },
     category: 'content',
     icon: '📰'
+  },
+  {
+    id: 'image-generation',
+    name: 'Image Generation API',
+    description: 'Generate SVG images, patterns, charts, and QR codes based on customizable parameters.',
+    longDescription: 'This advanced API creates SVG images on-demand with fully customizable parameters. Generate abstract shapes, patterns like grids or dots, simple QR codes, and interactive charts. All outputs are in SVG format which is lightweight, scalable, and can be used directly in web applications. Perfect for placeholder images, data visualization, or dynamic content creation.',
+    endpoints: [
+      {
+        path: '/api/services/image-generation',
+        method: 'GET',
+        description: 'Generate random shapes (default)'
+      },
+      {
+        path: '/api/services/image-generation?type=pattern&patternType=grid',
+        method: 'GET',
+        description: 'Generate a grid pattern'
+      },
+      {
+        path: '/api/services/image-generation?type=pattern&patternType=dots',
+        method: 'GET',
+        description: 'Generate a dots pattern'
+      },
+      {
+        path: '/api/services/image-generation?type=pattern&patternType=stripes',
+        method: 'GET',
+        description: 'Generate stripes pattern'
+      },
+      {
+        path: '/api/services/image-generation?type=qrcode&text=Hello World',
+        method: 'GET',
+        description: 'Generate a simple QR code'
+      },
+      {
+        path: '/api/services/image-generation?type=chart&width=400&height=300',
+        method: 'GET',
+        description: 'Generate a bar chart with random data'
+      },
+      {
+        path: '/api/services/image-generation?width=300&height=200&numShapes=10',
+        method: 'GET',
+        description: 'Customize size and number of shapes'
+      },
+      {
+        path: '/api/services/image-generation?format=json',
+        method: 'GET',
+        description: 'Get SVG as JSON response with metadata'
+      }
+    ],
+    parameters: [
+      {
+        name: 'type',
+        type: 'string',
+        description: 'Type of image to generate (shape, pattern, qrcode, chart)',
+        required: false,
+        default: 'shape'
+      },
+      {
+        name: 'width',
+        type: 'integer',
+        description: 'Width of the generated image in pixels',
+        required: false,
+        default: '200'
+      },
+      {
+        name: 'height',
+        type: 'integer',
+        description: 'Height of the generated image in pixels',
+        required: false,
+        default: '200'
+      },
+      {
+        name: 'patternType',
+        type: 'string',
+        description: 'Type of pattern (grid, dots, stripes, zigzag, checkerboard)',
+        required: false,
+        default: 'grid'
+      },
+      {
+        name: 'text',
+        type: 'string',
+        description: 'Text to encode in QR code',
+        required: false,
+        default: 'Hello World'
+      },
+      {
+        name: 'numShapes',
+        type: 'integer',
+        description: 'Number of shapes to generate',
+        required: false,
+        default: '5'
+      },
+      {
+        name: 'seed',
+        type: 'integer',
+        description: 'Random seed for deterministic generation',
+        required: false
+      },
+      {
+        name: 'format',
+        type: 'string',
+        description: 'Response format (svg or json)',
+        required: false,
+        default: 'svg'
+      },
+      {
+        name: 'backgroundColor',
+        type: 'string',
+        description: 'Background color in hex format',
+        required: false,
+        default: 'white'
+      },
+      {
+        name: 'color1',
+        type: 'string',
+        description: 'Primary color for patterns in hex format',
+        required: false
+      },
+      {
+        name: 'color2',
+        type: 'string',
+        description: 'Secondary color for patterns in hex format',
+        required: false
+      }
+    ],
+    example: {
+      request: '/api/services/image-generation?type=pattern&patternType=dots&width=200&height=200&color1=%23ff5733',
+      response: '<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">...</svg>'
+    },
+    category: 'media',
+    icon: '🎨'
+  },
+  {
+    id: 'text-to-speech',
+    name: 'Text-to-Speech API',
+    description: 'Convert text to synthesized speech with customizable voice profiles, pitch, and speed.',
+    longDescription: 'This API converts text input into synthesized speech audio, available in multiple voice profiles (neutral, male, female, child, robot). Control parameters like speed, pitch, and volume to customize the output. Audio is provided in WAV format, either as a base64-encoded string or as raw audio data. Ideal for accessibility features, voice interfaces, or content narration in applications.',
+    endpoints: [
+      {
+        path: '/api/services/text-to-speech?text=Hello World',
+        method: 'GET',
+        description: 'Convert text to speech (default voice)'
+      },
+      {
+        path: '/api/services/text-to-speech?text=Hello World&voice=female',
+        method: 'GET',
+        description: 'Convert text with female voice'
+      },
+      {
+        path: '/api/services/text-to-speech?text=Hello World&voice=male',
+        method: 'GET',
+        description: 'Convert text with male voice'
+      },
+      {
+        path: '/api/services/text-to-speech?text=Hello World&voice=robot',
+        method: 'GET',
+        description: 'Convert text with robot voice'
+      },
+      {
+        path: '/api/services/text-to-speech?text=Hello World&speed=0.8',
+        method: 'GET',
+        description: 'Adjust speech speed (slower)'
+      },
+      {
+        path: '/api/services/text-to-speech?text=Hello World&pitch=1.5',
+        method: 'GET',
+        description: 'Adjust voice pitch (higher)'
+      },
+      {
+        path: '/api/services/text-to-speech?text=Hello World&quality=enhanced',
+        method: 'GET',
+        description: 'Use enhanced quality voice synthesis'
+      },
+      {
+        path: '/api/services/text-to-speech?text=Hello World&format=audio',
+        method: 'GET',
+        description: 'Get direct audio output (WAV format)'
+      }
+    ],
+    parameters: [
+      {
+        name: 'text',
+        type: 'string',
+        description: 'Text to convert to speech (max 200 characters)',
+        required: true
+      },
+      {
+        name: 'voice',
+        type: 'string',
+        description: 'Voice profile (neutral, male, female, child, robot)',
+        required: false,
+        default: 'neutral'
+      },
+      {
+        name: 'speed',
+        type: 'float',
+        description: 'Speech speed (0.5 to 2.0)',
+        required: false,
+        default: '1.0'
+      },
+      {
+        name: 'pitch',
+        type: 'float',
+        description: 'Voice pitch (0.5 to 2.0)',
+        required: false,
+        default: '1.0'
+      },
+      {
+        name: 'volume',
+        type: 'float',
+        description: 'Audio volume (0.1 to 1.0)',
+        required: false,
+        default: '0.5'
+      },
+      {
+        name: 'format',
+        type: 'string',
+        description: 'Response format (json or audio)',
+        required: false,
+        default: 'json'
+      },
+      {
+        name: 'quality',
+        type: 'string',
+        description: 'Voice quality (standard or enhanced)',
+        required: false,
+        default: 'standard'
+      }
+    ],
+    example: {
+      request: '/api/services/text-to-speech?text=Welcome to the text to speech API',
+      response: {
+        "status": "success",
+        "text": "Welcome to the text to speech API",
+        "audio": {
+          "format": "wav",
+          "encoding": "base64",
+          "data": "UklGRiT..."
+        },
+        "parameters": {
+          "voice": "neutral",
+          "speed": 1,
+          "pitch": 1,
+          "volume": 0.5
+        }
+      }
+    },
+    category: 'media',
+    icon: '🔊'
   }
 ];
 
