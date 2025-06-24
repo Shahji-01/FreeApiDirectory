@@ -2,9 +2,13 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
+  "/": "pages/index.js",
   "/api/apis": "pages/api/apis.js",
+  "/api/services": "pages/api/services.js",
+  "/api-services": "pages/api-services.js",
+  "/search": "pages/search.js",
+  "/api/categories": "pages/api/categories.js",
+  "/api-documentation": "pages/api-documentation.js",
   "/api-details/[id]": "pages/api-details/[id].js",
-  "/admin": "pages/admin.js",
-  "/api/admin/auth": "pages/api/admin/auth.js",
-  "/admin/login": "pages/admin/login.js"
+  "/api/services/colors": "pages/api/services/colors.js"
 }
